@@ -329,12 +329,6 @@ function sendSMS() {
     const message = document.getElementById("smsMessage").value.trim(); // Get the message the user typed
     const box = document.getElementById("smsMessageBox"); // Box where we show status messages to the user
 
-    // Make sure both phone numbers and message are provided
-    if (!phones.length || !message) {
-        box.innerHTML = "<p style='color:red;'>Please fill all fields.</p>";
-        return;
-    }
-
     // Let the user know that sending has started
     box.innerHTML = "<p style='color:#0A2540;'>Sending...</p>";
 
@@ -345,7 +339,7 @@ function sendSMS() {
     // Loop through each number so we can track each individual message result
     phones.forEach(num => {
         // Send one SMS per phone number using backend API
-        fetch("http://localhost:5001/twilio-send", {
+        fetch("https://fast-sms-backend.onrender.com/twilio-send", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ phoneList: [num], message })
@@ -412,4 +406,5 @@ function extractPhones(file, id) {
     };
 
     reader.readAsArrayBuffer(file);
+
 }
