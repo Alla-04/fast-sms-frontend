@@ -103,7 +103,6 @@
             <input type="text" class="input" id="emailSurveyBasic" placeholder="https://your-survey-link.com" required>
 
             <button class="btn dark" type="submit">Send Email</button>  <!-- Sends the email(s) -->
-            <div class="g-recaptcha" data-sitekey="6Lekxy0sAAAAANXPMJX6fZkcCVkZJ4ng4ZyZk3v_"></div> <!-- reCAPTCHA check to ensure emails are sent by real users, not bots -->
             <p id="messageBoxBasic"></p> <!-- Displays success/failure status -->
         </form>
 
@@ -137,9 +136,11 @@
             <textarea id="emailBodyAdv" class="textarea" placeholder="Write your message..." required></textarea>
 
             <button class="btn dark" type="submit">Send Email</button>  <!-- Sends advanced email -->
-            <div class="g-recaptcha" data-sitekey="6Lekxy0sAAAAANXPMJX6fZkcCVkZJ4ng4ZyZk3v_"></div>
             <p id="messageBoxAdvanced"></p> <!-- Displays advanced email status -->
         </form>
+
+        <!-- reCAPTCHA check to ensure emails are sent by real users, not bots -->
+        <div class="g-recaptcha" data-sitekey="6Lekxy0sAAAAANXPMJX6fZkcCVkZJ4ng4ZyZk3v_"></div>
 
     </div>
 
@@ -190,4 +191,5 @@
 </body>
 
 </html>
+
 
