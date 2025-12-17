@@ -104,6 +104,7 @@
 
             <button class="btn dark" type="submit">Send Email</button>  <!-- Sends the email(s) -->
             <p id="messageBoxBasic"></p> <!-- Displays success/failure status -->
+            
         </form>
 
 
@@ -137,11 +138,11 @@
 
             <button class="btn dark" type="submit">Send Email</button>  <!-- Sends advanced email -->
             <p id="messageBoxAdvanced"></p> <!-- Displays advanced email status -->
+
         </form>
-
+        
         <!-- reCAPTCHA check to ensure emails are sent by real users, not bots -->
-        <div class="g-recaptcha" data-sitekey="6Lekxy0sAAAAANXPMJX6fZkcCVkZJ4ng4ZyZk3v_"></div>
-
+        <div id="email-recaptcha"></div>       
     </div>
 
 
@@ -175,7 +176,11 @@
 
             <!-- Sends SMS messages -->
             <button class="btn orange" type="submit">Send SMS</button>
+
         </form>
+
+        <!-- reCAPTCHA check to ensure SMS is sent by real users, not bots -->
+         <div id="sms-recaptcha"></div> 
 
         <!-- Displays SMS success/failure status -->
         <p id="smsMessageBox"></p>
@@ -184,12 +189,10 @@
 </section>
 
 <!-- reCAPTCHA script -->
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    
+<script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
+
+
 <!-- External JavaScript file containing all logic -->
 <script src="script.js"></script>
 </body>
-
 </html>
-
-
