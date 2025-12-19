@@ -393,7 +393,7 @@ function sendSMS() {
     // Loop through each number so we can track each individual message result
     phones.forEach(num => {
         // Send one SMS per phone number using backend API
-        fetch("http://localhost:5001/twilio-send", {
+        fetch("https://fast-sms-backend.onrender.com/twilio-send", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ phoneList: [num], message, captchaToken: captchaToken })
@@ -475,3 +475,4 @@ function extractPhones(fileInput, targetId) {
 
     reader.readAsArrayBuffer(file);
 }
+
