@@ -89,7 +89,7 @@
                     <!-- CSV/Excel upload auto-fills recipient emails -->
                     <label class="file-upload">
                         Choose File
-                        <input type="file" id="emailFileBasic" accept=".csv,.xlsx,.xls" onchange="extractEmails(this.files[0], 'emailRecipientsBasic')">
+                        <input type="file" id="emailFileBasic" accept=".csv,.xlsx,.xls" onchange="extractEmails(this, 'emailRecipientsBasic')">
                     </label>
                 </div>
             </div>
@@ -123,7 +123,7 @@
                     <!-- Upload file to auto-fill recipients -->
                     <label class="file-upload">
                         Choose File
-                        <input type="file" id="emailFileAdv" accept=".csv,.xlsx,.xls" onchange="extractEmails(this.files[0], 'emailRecipientsAdv')">
+                        <input type="file" id="emailFileAdv" accept=".csv,.xlsx,.xls" onchange="extractEmails(this, 'emailRecipientsAdv')">
                     </label>
                 </div>
             </div>
@@ -165,7 +165,7 @@
                     <!-- Upload file to auto-fill phone numbers -->
                     <label class="file-upload">
                         Choose File
-                        <input type="file" id="smsFile" accept=".csv,.xlsx,.xls" onchange="extractPhones(this.files[0], 'smsPhones')">
+                        <input type="file" id="smsFile" accept=".csv,.xlsx,.xls" onchange="extractPhones(this, 'smsPhones')">
                     </label>
                 </div>
             </div>
@@ -197,4 +197,5 @@
 <script src="script.js"></script>
 </body>
 </html>
+
 
