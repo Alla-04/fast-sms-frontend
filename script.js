@@ -321,32 +321,45 @@ function sendEmailAdvanced() {
 }
 
 
-// Extracts all email addresses from an uploaded CSV/Excel file
-function extractEmails(file, id) {
-    const reader = new FileReader(); // Create a FileReader to read the contents of the uploaded file
+// Extracts all email addresses from all sheets in an uploaded CSV/Excel file
+function extractEmails(fileInput, targetId) {
 
-    reader.onload = function(e) {
-        // Convert the file into an Excel workbook that JavaScript can read
+    // Stop if no file is selected
+    if (!fileInput.files || fileInput.files.length === 0) return;
+
+    const file = fileInput.files[0]; // Get the uploaded file from the file input
+    const reader = new FileReader(); // Create a FileReader to read the file contents
+
+    reader.onload = function (e) {
+        // Read the uploaded file into an Excel workbook
         const workbook = XLSX.read(new Uint8Array(e.target.result), { type: "array" });
-        // Convert the first sheet of the workbook into simple row data
-        const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
+        // Array to store all extracted email addresses
+        const emails = [];
 
-        // Store all valid emails found in the file
-        const validEmails = [];
+        // Loop through all sheets
+        workbook.SheetNames.forEach(sheetName => {
+            const sheet = workbook.Sheets[sheetName];
+            // Convert the sheet into row-based data
+            const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-        // Loop through every cell in every row to find email addresses
-        rows.forEach(row => row.forEach(cell => {
-            // If the cell is text and contains an @ symbol, treat it as an email
-            if (typeof cell === "string" && cell.includes("@")) {
-                validEmails.push(cell.trim());
-            }
-        }));
+            // Loop through each row and cell in the current sheet
+            rows.forEach(row =>
+                row.forEach(cell => {
+                    // If the cell contains text and looks like an email, store it
+                    if (typeof cell === "string" && cell.includes("@")) {
+                        emails.push(cell.trim());
+                    }
+                })
+            );
+        });
 
-        // Insert all found emails into the target input box, separated by commas
-        document.getElementById(id).value = validEmails.join(", ");
+        // Insert all extracted emails into the target input field
+        document.getElementById(targetId).value = emails.join(", ");
+        // Reset the file input so the same file can be uploaded again
+        fileInput.value = "";
     };
 
-    // Start reading the uploaded file so the onload function can process it
+    // Start reading the uploaded file
     reader.readAsArrayBuffer(file);
 }
 
@@ -380,7 +393,7 @@ function sendSMS() {
     // Loop through each number so we can track each individual message result
     phones.forEach(num => {
         // Send one SMS per phone number using backend API
-        fetch("https://fast-sms-backend.onrender.com/twilio-send", {
+        fetch("http://localhost:5001/twilio-send", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ phoneList: [num], message, captchaToken: captchaToken })
@@ -403,7 +416,6 @@ function sendSMS() {
         });
     });
 
-    
     // Function to update the final results once ALL SMS attempts are complete
     function updateSMSStatus() {
         const total = success + fail; // How many messages have finished processing
@@ -428,29 +440,38 @@ function sendSMS() {
 }
 
 
-// Extracts phone numbers from an uploaded CSV/Excel file
-function extractPhones(file, id) {
+// Extracts all phone numbers from all sheets in an uploaded CSV/Excel file
+function extractPhones(fileInput, targetId) {
+
+    if (!fileInput.files || fileInput.files.length === 0) return;
+
+    const file = fileInput.files[0];
     const reader = new FileReader();
 
-    reader.onload = function(e) {
+    reader.onload = function (e) {
         const workbook = XLSX.read(new Uint8Array(e.target.result), { type: "array" });
-        const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
+        const phones = [];
 
-        const validPhones = [];
+        workbook.SheetNames.forEach(sheetName => {
+            const sheet = workbook.Sheets[sheetName];
+            const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-        rows.forEach(row => row.forEach(cell => {
-            // Convert numbers to strings in case Excel parsed them as numeric values
-            if (typeof cell === "number") cell = cell.toString();
+            rows.forEach(row =>
+                row.forEach(cell => {
+                    // Convert numbers to strings in case Excel parsed them as numeric values
+                    if (typeof cell === "number") cell = cell.toString();
 
-            // If the cell is a string and matches a phone number pattern with an optional + sign followed by at least 8 digits
-            if (typeof cell === "string" && cell.match(/^\+?[0-9]{8,}$/)) {
-                validPhones.push(cell.trim());
-            }
-        }));
+                    // If the cell is a valid phone number (optional + and at least 8 digits)
+                    if (typeof cell === "string" && cell.match(/^\+?[0-9]{8,}$/)) {
+                        phones.push(cell.trim());
+                    }
+                })
+            );
+        });
 
-        document.getElementById(id).value = validPhones.join(", ");
+        document.getElementById(targetId).value = phones.join(", ");
+        fileInput.value = "";
     };
 
     reader.readAsArrayBuffer(file);
 }
-
