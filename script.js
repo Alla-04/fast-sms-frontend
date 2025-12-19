@@ -221,7 +221,6 @@ function sendEmailBasic() {
             subject: subject,
             email: email,
             survey: survey,
-            "g-recaptcha-response": token // Send the reCAPTCHA verification token so EmailJS can confirm the request is from a real user
         })
         // If the email is sent successfully, update success counter
         .then(() => {
@@ -292,7 +291,6 @@ function sendEmailAdvanced() {
             subject2: subject2,
             body: body,
             email2: email2,
-            "g-recaptcha-response": token
         })
         .then(() => {
             success++;
@@ -455,3 +453,4 @@ function extractPhones(file, id) {
 
     reader.readAsArrayBuffer(file);
 }
+
